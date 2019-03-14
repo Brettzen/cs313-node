@@ -11,7 +11,6 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
-const port = 8888;
 
 const connectionString = process.env.DATABASE_URL;
 
@@ -44,6 +43,6 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-app.listen(port, function() { console.log(`Listening on port ${port}....`);});
+app.listen(8888, function() { console.log("Listening on port 8888....");});
 
 module.exports = app;
