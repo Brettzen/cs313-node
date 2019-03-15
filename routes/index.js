@@ -2,11 +2,21 @@ var express = require('express');
 var ctrl = require('../controller/controller.js');
 var router = express.Router();
 
-/* GET home page. */
+/* GET pages that are simple routes */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: "Express.js" });
+  res.render('index');
 });
 
+router.get('/createAccount', function(req, res) {
+  res.render('createAccount');
+});
+
+
+/* GET pages that require controller logic */
 router.get('/getRanks/:id', ctrl.getRanks);
+
+router.post('/login', ctrl.login);
+
+router.post('/createAccount', ctrl.createAccount);
 
 module.exports = router;

@@ -1,11 +1,48 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+<!--Add head-->
+<% include head %>
+
+<body>
+
+<!--Header-->
+<% include header %>
+
+<!--Main-->
+<main>
+    <h2 class='text-center'>Student Login</h2>
+
+    <!-- Add Error message -->
+    <% console.log(msg) %>
+    <% if (typeof msg != 'undefined' && typeof msgclass != 'undefined') { %>
+      <div class="container alert alert-<%= msgclass %>">
+        <%= msg %>
+      </div>
+    <% } %>
+
+    <div class="container">
+        <form action="/login" method="post">
+            <div class="form-group">
+                <input type="text" class="form-control" id="username" name="username" placeholder="username" required>
+                <input type="password" class="form-control" id="password" name="password" placeholder="password" required>
+            </div>
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-primary btn-lg">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="container text-center">
+        <p style='margin-top: 80px;'>Want an account?</p>
+        <button id="createAccount" class="btn btn-primary">Create Account</button>
+    </div>
+
+    <p class='text-center'>Don't want to create an account? Try out a demo!</p>
+    <p class='text-center'><strong>Username:</strong> allcolorbelts</p>
+    <p class='text-center'><strong>Password:</strong> etkd123</p>
+</main>
+
+<!--Add footer-->
+<% include footer  %>
+
+</body>
+
 </html>

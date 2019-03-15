@@ -1,0 +1,17 @@
+<% include head %>
+<body>
+<% include header %>
+<main>
+  <h2 class='text-center'>Student Dashboard</h2>
+  <h4 class='text-center'>Welcome<%= typeof data != 'undefined' ? ', ' + data.firstname : '' %>!</h4>
+
+  <% if (typeof data != 'undefined') { %>
+    <ul>
+      <li><%= data.rankname %></li>
+      <li>Username: <%= data.username %></li>
+    </ul>
+  <% } %>
+
+</main>
+<% include footer %>
+</body>
