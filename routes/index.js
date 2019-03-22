@@ -19,4 +19,6 @@ router.post('/login', ctrl.login);
 
 router.post('/createAccount', ctrl.createAccount);
 
+router.get('/getCurriculum/:rankid/:categoryid', ctrl.getCurriculum);
+
 module.exports = router;

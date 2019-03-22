@@ -113,3 +113,21 @@ exports.addUser = function(data, callback) {
     callback(null, result.rows);
   });
 }
+
+exports.getCurriculum = function(data, callback) {
+  console.log("Attempting to get curriculum in the DB...");
+
+  var sql = "SELECT t.techniquekname, t.techniqueename, t.techniquedesc, i.imgsrc, c.categorykname, c.categorydesc FROM techniques t LEFT JOIN technique_images i ON t.techniqueid = i.techniqueid INNER JOIN curriculum_categories c ON t.categoryid = c.categoryid WHERE t.rankid = $1::int AND t.categoryid = $2::int";
+  var params = [data.rankid, data.categoryid];
+
+  pool.query(sql, params, function(err, result) {
+    if (err) {
+      console.log("ERROR! ", err);
+      callback(err, null);
+    }
+
+    console.log("DB RESULTS: " + JSON.stringify(result.rows));
+
+    callback(null, result.rows);
+  });
+}
