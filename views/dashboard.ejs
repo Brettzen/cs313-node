@@ -2,17 +2,17 @@
 <body>
 <% include header %>
 <nav class='navbar'>
-  <p>
-    <% if(typeof data.firstname != 'undefined') { %>
-      <span class='navbar-brand mb-0 h1' style='margin-right: 0;'><%= data.firstname %><% } if(typeof data.lastname != 'undefined') { %>
-       <%= data.lastname %>
-    <% } %></span><% if(typeof data.rankname != 'undefined') { %>
+  <p><% if(typeof data.lastname != 'undefined') { %>
+      <span class='navbar-brand mb-0 d-lh' style='margin-right: 0;'><%= data.firstname + " " + data.lastname %></span>
       <span class='navbar-brand mb-0 d-lg'> : <%= data.rankname %></span>
-    <% } %></p>
+    <% } else { %>
+      <span class='navbar-brand mb-0 h1' style='margin-right: 0;'><%= data.firstname %></span><span class='navbar-brand mb-0 d-lg'> : <%= data.rankname %></span>
+    <% } %>
+  </p>
 
-  <% if(typeof currentRank != 'undefined') { %>
+  <% if(typeof data.currentrank != 'undefined') { %>
     <p>
-      <span class='navbar-brand mb-0 d-lg'>Viewing <%= currentRank %> Belt Curriculum</span>";
+      <span class='navbar-brand mb-0 d-lg'>Viewing <%= data.currentrank %> Belt Curriculum</span>
     </p>
   <% } %>
 

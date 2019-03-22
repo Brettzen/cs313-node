@@ -40,6 +40,7 @@ exports.login = function(req, res) {
           res.render('index', msg);
         } else {
           data = result[0];
+          data.currentrank = data.rankname;
           console.log("Student Data: ", data);
           // var categoryMenu = buildCategoryMenu(data.studentid);
           res.render('dashboard', data );
@@ -105,52 +106,23 @@ exports.getCurriculum = function (req, res) {
   }
 
   model.getCurriculum(data, function(err, result) {
-    if(err || result == null || result.length < 1) {
+    if(err || result == null || result.length < 0) {
       console.log("ERROR! " + err);
       console.log("RESULT.LENGTH: " + result.length);
       console.log("RESULT: " + JSON.stringify(result));
       return;
+    } else if(result.length == 0) {
+      data = {
+        msg: "<h3>No curriculum currently available for this belt and category.</h3>"
+      }
+      res.json(data);
+      res.end();
     } else {
       res.json(result);
       res.end();
     }
   });
-
-  // model.getWhiteCurriculum(res.query.currentRank)
 }
-
-// function createFitnessTable(rankId, fitness) {
-//     var fitnessTable = "<h3 class='student-welcome'>Physical Fitness</h3>";
-//     fitnessTable += "<p class='student-welcome'>These are your stats from the last physical fitness test.</p>";
-//     fitnessTable += "<table class='curriculum-fitness student-welcome'>";
-//     fitnessTable += "<tr>";
-//     fitnessTable += "<th>Pushups: " + fitness[0]['pushupsstyle'] + "</th>";
-//     fitnessTable += "<td>" + fitness[0]['pushups'] + "</td>";
-//     fitnessTable += "</tr>";
-//     fitnessTable += "<tr>";
-//     fitnessTable += "<th>Leg Raises: " + fitness[0]['legraisesstyle'] + "</th>";
-//     fitnessTable += "<td>" + fitness[0]['legraises'] + "</td>";
-//     fitnessTable += " </tr>";
-//     fitnessTable += "<tr>";
-//     fitnessTable += "<th>Pullups: " + fitness[0]['pullupsstyle'] + "</th>";
-//     fitnessTable += "<td>" + fitness[0]['pullups'] + "</td>";
-//     fitnessTable += "</tr>";
-//     fitnessTable += "<tr>";
-//     fitnessTable += "<th>Jumps: " + fitness[0]['jumpsstyle'] + "</th>";
-//     fitnessTable += "<td>" + fitness[0]['jumps'] + "</td>";
-//     fitnessTable += "</tr>";
-//     fitnessTable += "<tr>";
-//     fitnessTable += "<th>Roundhouse Kicks (" + fitness[0]['roundtime'] + " per leg)</th>";
-//     fitnessTable += "<td>R-" + fitness[0]['roundright'] + " / L-" + fitness[0]['roundleft'] + "</td>";
-//     fitnessTable += "</tr>";
-//     fitnessTable += "<tr>";
-//     fitnessTable += "<th>Stretch Test: " + fitness[0]['stretchstyle'] + "</th>";
-//     fitnessTable += "<td>" + fitness[0]['stretch'] + "\"</td>";
-//     fitnessTable += "</tr>";
-//     fitnessTable += "</table> ";
-//
-//     return fitnessTable;
-// }
 
 function createEditableFitnessTable(rankId, fitness) {
     var fitnessTable = "<h3 class='student-welcome'>Physical Fitness</h3>";

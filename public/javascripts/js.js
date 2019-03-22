@@ -9,8 +9,7 @@ $().ready(function(){
       $(".responsive-curriculum-menu .fa-caret-up").toggle("fast");
   });
   $(window).resize(function(){
-//        console.log($(window).width());
-      if($(window).width() >= 873) {
+      if($(window).width() >= 888) {
           $(".curriculum-menu div:nth-child(n+2)").css("display", "initial");
           $(".responsive-curriculum-menu .fa-caret-down").css("display", "initial");
           $(".responsive-curriculum-menu .fa-caret-up").css("display", "none");
@@ -23,12 +22,12 @@ $().ready(function(){
       window.location = "/dashboard/" + this.value;
   });
 
-  $("stripe").on("click", function () {
-      if ($(window).width() <= 540) {
-          $(".curriculum-menu div:nth-child(n+2)").slideToggle("fast");
-          $(".responsive-curriculum-menu .fa-caret-down").toggle("fast");
-          $(".responsive-curriculum-menu .fa-caret-up").toggle("fast");
-      }
+  $(".stripe").on("click", function () {
+    if ($(window).width() <= 888) {
+      $(".curriculum-menu div:nth-child(n+2)").slideToggle("fast");
+      $(".responsive-curriculum-menu .fa-caret-down").toggle("fast");
+      $(".responsive-curriculum-menu .fa-caret-up").toggle("fast");
+    }
   });
 
   $("#editFitness").on('click', function(){
@@ -95,8 +94,13 @@ $().ready(function(){
 function getCurriculum(category, currentRank) {
   $.get("/getCurriculum/" + currentRank + "/" + category, function(data, status) {
     console.log(data);
-    var curriculum = buildCurriculum(data);
-    $(".curriculum-main").html(curriculum);
+    if(typeof data.msg == 'undefined') {
+      var curriculum = buildCurriculum(data);
+      $(".curriculum-main").html(curriculum);
+    } else {
+      $(".curriculum-main").html(data.msg);
+    }
+
   });
 }
 
