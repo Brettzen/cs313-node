@@ -8,4 +8,13 @@
   <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   <script src="/javascripts/js.js"></script>
+  <% if (typeof ranks[0].rankcolor != 'undefined') { %>
+    <style>
+      .etkd-font { color: <%= ranks[0].rankcolor; %> }
+      nav, .drop-down-menu ul, footer { background: <%= ranks[0].rankcolor; %> }
+      nav, nav a:visited, nav a:hover, nav a:active, nav a, nav span, footer p, footer a, footer a:visited, footer h3 { color: <%= ranks[0].rankfontcolor; %> }
+      .curriculum-fitness tr:nth-child(odd) { background: <%= ranks[0].fitnesscolor; %> }
+      .nav-menu-left li:hover, .nav-menu-right li:hover { background: <%= ranks[0].navhovercolor; %> }
+    </style>
+  <% } %>
 </head>

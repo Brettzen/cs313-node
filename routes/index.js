@@ -29,4 +29,8 @@ router.post('/createAccount', ctrl.createAccount);
 
 router.get('/getCurriculum/:rankid/:categoryid', ctrl.getCurriculum);
 
+router.get('/studentInfo', ctrl.studentInfo);
+
+router.get('/changeCurrentRank/:rankid', ctrl.changeCurrentRank);
+
 module.exports = router;

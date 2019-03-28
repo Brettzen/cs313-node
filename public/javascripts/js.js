@@ -96,11 +96,14 @@ $().ready(function(){
 
   $('#rankSelect').change(function() {
     currentRank = $('#rankSelect').val();
-    console.log(currentRank);
-    var curriculumMenu = buildCurriculumMenu(currentRank);
-    $('.curriculum-menu').html(curriculumMenu);
-    var welcomeScreen = buildWelcomeScreen();
-    $('.curriculum-main').html(welcomeScreen);
+    $.get('/changeCurrentRank/' + currentRank, function(data, status) {
+      var curriculumMenu = buildCurriculumMenu(currentRank);
+      $('.curriculum-menu').html(curriculumMenu);
+      console.log(data);
+      var welcomeScreen = buildWelcomeScreen(data[0].rankname);
+      $('.curriculum-main').html(welcomeScreen);
+      changeColorScheme(data[0]);
+    });
   });
 
 
@@ -159,7 +162,16 @@ function buildCurriculumMenu(rank) {
   return menu;
 }
 
-function buildWelcomeScreen() {
-  var welcome = '<p class="student-welcome">Use the dropdown menu to the right to select a belt and the menu to the left to review the curriculum you will be tested on for your next test.</p>';
-  return welcome;
+function buildWelcomeScreen(rankname) {
+    var welcome = '<h2 class="student-welcome">' + rankname + ' Belt Curriculum</h2>';
+    welcome += '<p class="student-welcome">Use the dropdown menu to the right to select a belt and the menu to the left to review the curriculum you will be tested on for your next test.</p>';
+    return welcome;
+  }
+
+function changeColorScheme(colors) {
+  $('.etkd-font').css("color", colors.rankcolor);
+  $('nav, .drop-down-menu ul, footer').css("background", colors.rankcolor);
+  $('nav, nav a:visited, nav a:hover, nav a:active, nav a, nav span, footer p, footer a, footer a:visited, footer h3').css("color", colors.rankfontcolor);
+  $('.curriculum-fitness tr:nth-child(odd)').css("background", colors.fitnesscolor);
+  $('.nav-menu-left li:hover, .nav-menu-right li:hover').css("background", colors.navhovercolor);
 }

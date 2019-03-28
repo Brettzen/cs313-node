@@ -46,6 +46,7 @@ exports.login = function(req, res) {
           } else {
             student = result[0];
             student.currentrank = student.rankname;
+            student.currentrankid = student.rankid;
             console.log("Student Data: ", student);
             req.session.data = student;
 
@@ -116,6 +117,27 @@ exports.createAccount = function(req, res) {
           res.render('index', { msg: msg.msg, msgclass: msg.msgclass });
         }
       });
+    }
+  });
+}
+
+exports.studentInfo = function (req, res) {
+  res.json(student);
+}
+
+exports.changeCurrentRank = function (req, res) {
+  console.log(req.params.rankid);
+  console.log(student.currentrankid);
+  student.currentrankid = req.params.rankid;
+  console.log("new student current rank id:" , student.currentrankid);
+  model.getRankNameAndColors(student.currentrankid, function(err, result) {
+    if(err || result == null || result.length < 1) {
+      console.log("ERROR! " + err);
+      console.log("RESULT.LENGTH: " + result.length);
+      console.log("RESULT: " + JSON.stringify(result));
+      res.json("ERROR: " + err);
+    } else {
+      res.json(result);
     }
   });
 }

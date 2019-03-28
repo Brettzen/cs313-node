@@ -11,7 +11,7 @@ const client = new Client({connectionString: connectionString});
 exports.getRanksFromDB = function(id, callback) {
   console.log("getRanksFromDB called with rankid: ", id);
 
-  var sql = "SELECT rankid, rankname FROM ranks WHERE rankid <= $1::int ORDER BY rankid DESC";
+  var sql = "SELECT rankid, rankname, rankcolor, rankfontcolor, fitnesscolor, navhovercolor FROM ranks WHERE rankid <= $1::int ORDER BY rankid DESC";
   var params = [id];
 
   pool.query(sql, params, function(err, result) {
@@ -78,10 +78,10 @@ exports.checkUsername = function(username, callback) {
   });
 }
 
-exports.getRankName = function(rankid, callback) {
-  console.log("Getting rank name in the DB... rankid is: ", rankid);
+exports.getRankNameAndColors = function(rankid, callback) {
+  console.log("Getting rank name and colors in the DB... rankid is: ", rankid);
 
-  var sql = "SELECT rankname FROM ranks WHERE rankid = $1::int";
+  var sql = "SELECT rankname, rankcolor, rankfontcolor, fitnesscolor, navhovercolor FROM ranks WHERE rankid = $1::int";
   var params = [rankid];
 
   pool.query(sql, params, function(err, result) {
