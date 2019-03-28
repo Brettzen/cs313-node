@@ -2,18 +2,23 @@
 <body>
 <% include header %>
 <nav class='navbar'>
-  <p><% if(typeof data.lastname != 'undefined') { %>
-      <span class='navbar-brand mb-0 d-lh' style='margin-right: 0;'><%= data.firstname + " " + data.lastname %></span>
-      <span class='navbar-brand mb-0 d-lg'> : <%= data.rankname %></span>
+  <p><% if(typeof student.lastname != 'undefined') { %>
+      <span class='navbar-brand mb-0 d-lh' style='margin-right: 0;'><%= student.firstname + " " + student.lastname %></span>
+      <span class='navbar-brand mb-0 d-lg'> : <%= student.rankname %></span>
     <% } else { %>
-      <span class='navbar-brand mb-0 h1' style='margin-right: 0;'><%= data.firstname %></span><span class='navbar-brand mb-0 d-lg'> : <%= data.rankname %></span>
+      <span class='navbar-brand mb-0 h1' style='margin-right: 0;'><%= student.firstname %></span><span class='navbar-brand mb-0 d-lg'> : <%= student.rankname %></span>
     <% } %>
   </p>
 
-  <% if(typeof data.currentrank != 'undefined') { %>
-    <p>
-      <span class='navbar-brand mb-0 d-lg'>Viewing <%= data.currentrank %> Belt Curriculum</span>
-    </p>
+  <% if (typeof ranks != 'undefined') { %>
+    <div class='navbar-brand mb-0'>
+      <span>Currently Viewing: </span>
+      <select id='rankSelect'>
+        <% ranks.forEach(function(rank) { %>
+          <option value=<%= rank.rankid %>><%= rank.rankname %></option>
+        <% }); %>
+      </select>
+    </div>
   <% } %>
 
     <p class='logout navbar-brand mb-0' id="logout" style="cursor: pointer;">Logout <i class='fas fa-sign-out-alt'></i></p>
@@ -26,17 +31,17 @@
                 <p>Curriculum Categories</p>
                 <i class="fa fa-caret-down" aria-hidden="true"></i><i class="fa fa-caret-up" aria-hidden="true"></i>
             </div>
-            <div class="white-stripe stripe" onclick="getCurriculum(1,<%= data.rankid %>)">Basic Techniques</div>
-            <div class="yellow-stripe stripe" onclick="getCurriculum(2,<%= data.rankid %>)">Board Breaking</div>
-            <div class="green-stripe stripe" onclick="getCurriculum(3,<%= data.rankid %>)">Kicks</div>
-            <div class="blue-stripe stripe" onclick="getCurriculum(4,<%= data.rankid %>)">Forms</div>
-            <div class="red-stripe stripe" onclick="getCurriculum(5,<%= data.rankid %>)">Self-Defense</div>
-            <div class="black-stripe stripe" onclick="getCurriculum(6,<%= data.rankid %>)">Sparring</div>
-        </div><div class="curriculum-main" style="margin-top:0;">
+            <div class="white-stripe stripe" onclick="getCurriculum(1,<%= student.rankid %>)">Basic Techniques</div>
+            <div class="yellow-stripe stripe" onclick="getCurriculum(2,<%= student.rankid %>)">Board Breaking</div>
+            <div class="green-stripe stripe" onclick="getCurriculum(3,<%= student.rankid %>)">Kicks</div>
+            <div class="blue-stripe stripe" onclick="getCurriculum(4,<%= student.rankid %>)">Forms</div>
+            <div class="red-stripe stripe" onclick="getCurriculum(5,<%= student.rankid %>)">Self-Defense</div>
+            <div class="black-stripe stripe" onclick="getCurriculum(6,<%= student.rankid %>)">Sparring</div>
+        </div><div class="curriculum-main">
             <h2 class="student-welcome">Welcome<%
-                if (typeof data.gender != 'undefined') {
-                  if(data.gender == 'm') { %>, sir<%
-                  } else if (data.gender == 'f') { %>, ma'am <%
+                if (typeof student.gender != 'undefined') {
+                  if(student.gender == 'm') { %>, sir<%
+                  } else if (student.gender == 'f') { %>, ma'am <%
                   }
                 }
                 %>!</h2>

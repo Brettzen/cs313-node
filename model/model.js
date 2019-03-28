@@ -9,9 +9,9 @@ const pool = new Pool({connectionString: connectionString});
 const client = new Client({connectionString: connectionString});
 
 exports.getRanksFromDB = function(id, callback) {
-  console.log("getRanksFromDB called with ID: ", id);
+  console.log("getRanksFromDB called with rankid: ", id);
 
-  var sql = "SELECT * FROM ranks WHERE rankid = $1::int";
+  var sql = "SELECT rankid, rankname FROM ranks WHERE rankid <= $1::int ORDER BY rankid DESC";
   var params = [id];
 
   pool.query(sql, params, function(err, result) {
@@ -45,7 +45,7 @@ exports.checkPassword = function(username, callback) {
 exports.getUser = function(username, callback) {
   console.log("Getting user data from the DB...");
 
-  var sql = "SELECT studentid, rankid, rankname, username, firstname FROM students WHERE username = $1::text";
+  var sql = "SELECT studentid, rankid, rankname, username, firstname, lastname, gender FROM students WHERE username = $1::text";
   var params = [username];
 
   pool.query(sql, params, function(err, result) {

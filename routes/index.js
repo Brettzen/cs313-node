@@ -4,7 +4,11 @@ var router = express.Router();
 
 /* GET pages that are simple routes */
 router.get('/', function(req, res, next) {
-  res.render('index');
+  if(req.session.data) {
+    res.render('dashboard');
+  } else {
+    res.render('index');
+  }
 });
 
 router.get('/createAccount', function(req, res) {
@@ -12,10 +16,14 @@ router.get('/createAccount', function(req, res) {
 });
 
 
-/* GET pages that require controller logic */
+/* GET & POST pages that require controller logic */
 router.get('/getRanks/:id', ctrl.getRanks);
 
 router.post('/login', ctrl.login);
+
+router.get('/login', ctrl.login);
+
+router.get('/logout', ctrl.logout);
 
 router.post('/createAccount', ctrl.createAccount);
 

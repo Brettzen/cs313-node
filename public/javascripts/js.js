@@ -87,12 +87,27 @@ $().ready(function(){
   });
 
   $('#logout').on('click', function() {
-      window.location.href = "/";
+      $.get("/logout", function(data, status) {
+        if(data) {
+          window.location.href = "/";
+        }
+      });
   });
-});
 
-function getCurriculum(category, currentRank) {
-  $.get("/getCurriculum/" + currentRank + "/" + category, function(data, status) {
+  $('#rankSelect').change(function() {
+    currentRank = $('#rankSelect').val();
+    console.log(currentRank);
+    var curriculumMenu = buildCurriculumMenu(currentRank);
+    $('.curriculum-menu').html(curriculumMenu);
+    var welcomeScreen = buildWelcomeScreen();
+    $('.curriculum-main').html(welcomeScreen);
+  });
+
+
+});  // End Ready
+
+function getCurriculum(category, rank) {
+  $.get("/getCurriculum/" + rank + "/" + category, function(data, status) {
     console.log(data);
     if(typeof data.msg == 'undefined') {
       var curriculum = buildCurriculum(data);
@@ -100,7 +115,6 @@ function getCurriculum(category, currentRank) {
     } else {
       $(".curriculum-main").html(data.msg);
     }
-
   });
 }
 
@@ -129,4 +143,23 @@ function buildCurriculum(techniques) {
   });
   curriculumDisplay += "</div>";
   return curriculumDisplay;
+}
+
+function buildCurriculumMenu(rank) {
+  var menu = '<div class="responsive-curriculum-menu">'
+            + '<p>Curriculum Categories</p>'
+            + '<i class="fa fa-caret-down" aria-hidden="true"></i><i class="fa fa-caret-up" aria-hidden="true"></i>'
+            + '</div>'
+            + '<div class="white-stripe stripe" onclick="getCurriculum(1,' + currentRank + ')">Basic Techniques</div>'
+            + '<div class="yellow-stripe stripe" onclick="getCurriculum(2,' + currentRank + ')">Board Breaking</div>'
+            + '<div class="green-stripe stripe" onclick="getCurriculum(3,' + currentRank + ')">Kicks</div>'
+            + '<div class="blue-stripe stripe" onclick="getCurriculum(4,' + currentRank + ')">Forms</div>'
+            + '<div class="red-stripe stripe" onclick="getCurriculum(5,' + currentRank + ')">Self-Defense</div>'
+            + '<div class="black-stripe stripe" onclick="getCurriculum(6,' + currentRank + ')">Sparring</div>';
+  return menu;
+}
+
+function buildWelcomeScreen() {
+  var welcome = '<p class="student-welcome">Use the dropdown menu to the right to select a belt and the menu to the left to review the curriculum you will be tested on for your next test.</p>';
+  return welcome;
 }

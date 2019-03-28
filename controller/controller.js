@@ -19,43 +19,64 @@ exports.getRanks = function(req, res) {
 }
 
 exports.login = function(req, res) {
-  var username = req.body.username;
-  var password = req.body.password;
+  if(req.session.data) {
+    res.render('dashboard');
+  } else if (!req.body.username){
+    res.render('index');
+  } else {
+    var username = req.body.username;
+    var password = req.body.password;
 
-  model.checkPassword(username, function(err, result) {
-    console.log("Checking Password");
-    if(err || result == null || result.length != 1) {
-      msg = {
-        msg: 'There was a problem signing in. Please verify your credentials and try again.',
-        msgclass: 'danger'
-      }
-      res.render('index', { msg: msg.msg, msgclass: msg.msgclass });
-    } else if(bcrypt.compareSync(password, result[0].password)) {
-      model.getUser(username, function(err, result) {
-        if(err || result == null || result.length != 1) {
-          msg = {
-            msg: 'There was a problem signing in. Please verify your credentials and try again.',
-            class: 'danger'
-          }
-          res.render('index', msg);
-        } else {
-          data = result[0];
-          data.currentrank = data.rankname;
-          console.log("Student Data: ", data);
-          // var categoryMenu = buildCategoryMenu(data.studentid);
-          res.render('dashboard', data );
+    model.checkPassword(username, function(err, result) {
+      console.log("Checking Password");
+      if(err || result == null || result.length != 1) {
+        msg = {
+          msg: 'There was a problem signing in. Please verify your credentials and try again.',
+          msgclass: 'danger'
         }
-      });
-    } else {
-      console.log("Password incorrect.");
-      msg = {
-        msg: 'Your password was incorrect. Please verify your credentials and try again.',
-        msgclass: 'danger'
+        res.render('index', { msg: msg.msg, msgclass: msg.msgclass });
+      } else if(bcrypt.compareSync(password, result[0].password)) {
+        model.getUser(username, function(err, result) {
+          if(err || result == null || result.length != 1) {
+            msg = {
+              msg: 'There was a problem signing in. Please verify your credentials and try again.',
+              class: 'danger'
+            }
+            res.render('index', msg);
+          } else {
+            student = result[0];
+            student.currentrank = student.rankname;
+            console.log("Student Data: ", student);
+            req.session.data = student;
+
+            // get ranks for belt select
+            model.getRanksFromDB(student.rankid, function(err, result) {
+              if(err || result == null || result.length < 1) {
+                ranks = [
+                  {
+                    rankid : student.rankid,
+                    rankname : student.rankname,
+                  }
+                ]
+              } else {
+                ranks = result;
+                console.log("Ranks:", ranks);
+                res.render('dashboard', { student: student, ranks: ranks });
+              }
+            });
+          }
+        });
+      } else {
+        console.log("Password incorrect.");
+        msg = {
+          msg: 'Your password was incorrect. Please verify your credentials and try again.',
+          msgclass: 'danger'
+        }
+        console.log(msg);
+        res.render('index', { msg: msg.msg, msgclass: msg.msgclass });
       }
-      console.log(msg);
-      res.render('index', { msg: msg.msg, msgclass: msg.msgclass });
-    }
-  });
+    });
+  }
 }
 
 exports.createAccount = function(req, res) {
@@ -113,15 +134,24 @@ exports.getCurriculum = function (req, res) {
       return;
     } else if(result.length == 0) {
       data = {
-        msg: "<h3>No curriculum currently available for this belt and category.</h3>"
+        msg: "<h3>There is currently no curriculum available for this belt and category.</h3>"
       }
       res.json(data);
-      res.end();
     } else {
       res.json(result);
-      res.end();
     }
   });
+}
+
+exports.logout = function (req, res) {
+  if (req.session.data) {
+    req.session.destroy();
+    res.json(true);
+    res.end();
+  } else {
+    res.json(false);
+    res.end();
+  }
 }
 
 function createEditableFitnessTable(rankId, fitness) {
@@ -166,23 +196,6 @@ function createEditableFitnessTable(rankId, fitness) {
     fitnessTable += '<button class="fitness-edit btn btn-danger student-welcome" id="cancelFitness">Cancel</button>';
 
     return fitnessTable;
-}
-
-function createBeltSelect(rankId, ranks) {
-  beltSelect = "<aside class='belt-select belt-select7'>";
-  beltSelect += "<span>Selected Belt Rank: </span>";
-  beltSelect += "<select>";
-  ranks.forEach(function(rank) {
-      if (rank['rankid'] == rankId) {
-          beltSelect += "<option value='rank[rankid]' selected>rank[rankname]</option>";
-      } else {
-          beltSelect += "<option value='rank[rankid]'>rank[rankname]</option>";
-      }
-  });
-  beltSelect += "</select>";
-  beltSelect += "</aside>";
-
-  return beltSelect;
 }
 
 function buildCategoryMenu(categories) {
