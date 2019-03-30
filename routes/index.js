@@ -1,11 +1,21 @@
 var express = require('express');
 var ctrl = require('../controller/controller.js');
+var model = require('../model/model.js');
 var router = express.Router();
 
 /* GET pages that are simple routes */
 router.get('/', function(req, res, next) {
   if(req.session.data) {
-    res.render('dashboard');
+    model.getFitness(req.session.data.username, function(err, result) {
+      if(err || result == null || result.length < 1) {
+        res.render('index');
+      } else {
+        fitness = result[0];
+        req.session.fitness = fitness;
+        console.log("Fitness:", fitness);
+        res.render('dashboard', { fitness:fitness });
+      }
+    });
   } else {
     res.render('index');
   }
@@ -32,5 +42,7 @@ router.get('/getCurriculum/:rankid/:categoryid', ctrl.getCurriculum);
 router.get('/studentInfo', ctrl.studentInfo);
 
 router.get('/changeCurrentRank/:rankid', ctrl.changeCurrentRank);
+
+router.get('/addFitness', ctrl.addFitness);
 
 module.exports = router;

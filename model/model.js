@@ -131,3 +131,39 @@ exports.getCurriculum = function(data, callback) {
     callback(null, result.rows);
   });
 }
+
+exports.getFitness = function(username, callback) {
+  console.log("Attempting to get fitness in the DB...");
+
+  var sql = "SELECT s.firstname, s.rankname, s.gender, f.pushups, f.pushupsstyle, f.legRaises, f.legRaisesStyle, f.pullups, f.pullupsStyle, f.jumps, f.jumpsStyle, f.roundRight, f.roundLeft, f.roundTime, f.stretch, f.stretchStyle FROM students s LEFT JOIN fitness f ON s.studentId = f.studentId WHERE username = $1::text ORDER BY f.testDate DESC";
+  var params = [username];
+
+  pool.query(sql, params, function(err, result) {
+    if (err) {
+      console.log("ERROR! ", err);
+      callback(err, null);
+    }
+
+    console.log("DB RESULTS: " + JSON.stringify(result.rows));
+
+    callback(null, result.rows);
+  });
+}
+
+exports.addFitness = function(data, callback) {
+  console.log("Attempting to add fitness to the DB...");
+
+  var sql = "INSERT INTO fitness (studentid, pushups, legraises, pullups, jumps, roundright, roundleft, roundtime, stretch) VALUES ($1::int, $2::int, $3::int, $4::int, $5::int, $6::int, $7::int, $8::int, $9::int)";
+  var params = [data.studentid, data.pushups, data.legraises, data.pullups, data.jumps, data.roundright, data.roundleft, data.roundtime, data.stretch];
+
+  pool.query(sql, params, function(err, result) {
+    if (err) {
+      console.log("ERROR! ", err);
+      callback(err, null);
+    }
+
+    console.log("DB RESULTS: " + JSON.stringify(result));
+
+    callback(null, 1);
+  });
+}

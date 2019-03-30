@@ -38,15 +38,58 @@
             <div class="red-stripe stripe" onclick="getCurriculum(5,<%= student.rankid %>)">Self-Defense</div>
             <div class="black-stripe stripe" onclick="getCurriculum(6,<%= student.rankid %>)">Sparring</div>
         </div><div class="curriculum-main">
-            <h2 class="student-welcome">Welcome<%
-                if (typeof student.gender != 'undefined') {
-                  if(student.gender == 'm') { %>, sir<%
-                  } else if (student.gender == 'f') { %>, ma'am <%
-                  }
-                }
-                %>!</h2>
+          <h2 class="student-welcome">Welcome<%
+            if (typeof student.gender != 'undefined') {
+              if(student.gender == 'm') { %>, sir<%
+              } else if (student.gender == 'f') {
+                %>, ma'am<%
+              }
+            }
+          %>!</h2>
 
-            <p class="student-welcome">Use the dropdown menu to the right to select a belt and the menu to the left to review the curriculum you will be tested on for your next test.</p>
+          <p class="student-welcome">Use the dropdown menu to the right to select a belt and the menu to the left to review the curriculum you will be tested on for your next test.</p>
+
+          <% if(typeof fitness != 'undefined') { %>
+            <h3 class='student-welcome'>Physical Fitness</h3>
+            <p class='student-welcome'>These are your stats from the last physical fitness test.</p>
+            <table class='curriculum-fitness student-welcome'>
+              <tr>
+                <th>Pushups: <%= fitness.pushupsstyle %></th>
+                <td class='fitness-noedit pushups'><%= fitness.pushups %></td>
+                <td class='fitness-edit'><input name='pushups' id='pushups'></td>
+              </tr>
+              <tr>
+                <th>Leg Raises: <%= fitness.legraisesstyle %></th>
+                <td class='fitness-noedit legraises'><%= fitness.legraises %></td>
+                <td class='fitness-edit'><input name='legraises' id='legraises'></td>
+              </tr>
+              <tr>
+                <th>Pullups: <%= fitness.pullupsstyle %></th>
+                <td class='fitness-noedit pullups'><%= fitness.pullups %></td>
+                <td class='fitness-edit'><input name='pullups' id='pullups'></td>
+              </tr>
+              <tr>
+                <th>Jumps: <%= fitness.jumpsstyle %></th>
+                <td class='fitness-noedit jumps'><%= fitness.jumps %></td>
+                <td class='fitness-edit'><input name='jumps' id='jumps'></td>
+              </tr>
+              <tr>
+                <th class='fitness-noedit'>Roundhouse Kicks (<span class='roundtime'><%= fitness.roundtime %></span> seconds per leg)</th>
+                <th class='fitness-edit'>Roundhouse Kicks (<input name='roundtime' id='roundtime'> seconds per leg)</th>
+                <td class='fitness-noedit'>R-<span class='roundright'><%= fitness.roundright %></span> / L-<span class='roundleft'><%= fitness.roundleft %></span></td>
+                <td class='fitness-edit'>R-<input name='roundright' id='roundright'> / L-<input name='roundleft' id='roundleft'></td>
+              </tr>
+              <tr>
+                <th>Stretch Test: <%= fitness.stretchstyle %></th>
+                <td class='fitness-noedit stretch'><%= fitness.stretch %>"</td>
+                <td class='fitness-edit'><input name='stretch' id='stretch'>"</td>
+              </tr>
+            </table>
+
+            <button class="fitness-noedit btn btn-primary student-welcome" id="editFitness">Edit Fitness Stats</button>
+            <button class="fitness-edit btn btn-primary student-welcome" id="saveFitness">Save Fitness Stats</button>
+            <button class="fitness-edit btn btn-danger student-welcome" id="cancelFitness">Cancel</button>
+          <% } %>
         </div>
     </div>
 </main>

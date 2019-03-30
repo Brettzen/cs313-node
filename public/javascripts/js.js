@@ -47,20 +47,22 @@ $().ready(function(){
       var data = { pushups, legraises, pullups, jumps, roundright, roundleft, roundtime, stretch };
       console.log(data);
       $.ajax({
-          url: 'index.php?action=addFitness',
-          method: 'POST',
+          url: '/addFitness',
+          method: 'GET',
           data: data,
           dataType: 'text',
-          success: function(data) {
-              if(data == 1) {
+          success: function(result) {
+              if(result == 1) {
                   $('.pushups').html(pushups);
                   $('.legraises').html(legraises);
                   $('.pullups').html(pullups);
                   $('.jumps').html(jumps);
                   $('.roundright').html(roundright);
                   $('.roundleft').html(roundleft);
-                  $('.roundtime').html(roundtime + " seconds");
-                  $('.stretch').html(stretch);
+                  $('.roundtime').html(roundtime);
+                  $('.stretch').html(stretch + '\"');
+                  $('.fitness-edit input').val('');
+                  // console.log("Back from the server! Added fitness?");
               }
 
               var alert = '<div class="contact-alert alert" role="alert">' + data + '</div>';
@@ -174,4 +176,48 @@ function changeColorScheme(colors) {
   $('nav, nav a:visited, nav a:hover, nav a:active, nav a, nav span, footer p, footer a, footer a:visited, footer h3').css("color", colors.rankfontcolor);
   $('.curriculum-fitness tr:nth-child(odd)').css("background", colors.fitnesscolor);
   $('.nav-menu-left li:hover, .nav-menu-right li:hover').css("background", colors.navhovercolor);
+}
+
+function createEditableFitnessTable(rankId, fitness) {
+    var fitnessTable = "<h3 class='student-welcome'>Physical Fitness</h3>";
+    fitnessTable += "<p class='student-welcome'>These are your stats from the last physical fitness test.</p>";
+    fitnessTable += "<table class='curriculum-fitness student-welcome'>";
+    fitnessTable += "<tr>";
+    fitnessTable += "<th>Pushups: " + fitness[0]['pushupsstyle'] + "</th>";
+    fitnessTable += "<td class='fitness-noedit pushups'>" + fitness[0]['pushups'] + "</td>";
+    fitnessTable += "<td class='fitness-edit'><input name='pushups' id='pushups'></td>";
+    fitnessTable += "</tr>";
+    fitnessTable += "<tr>";
+    fitnessTable += "<th>Leg Raises: " + fitness[0]['legraisesstyle'] + "</th>";
+    fitnessTable += "<td class='fitness-noedit legraises'>" + fitness[0]['legraises'] + "</td>";
+    fitnessTable += "<td class='fitness-edit'><input name='legraises' id='legraises'></td>";
+    fitnessTable += " </tr>";
+    fitnessTable += "<tr>";
+    fitnessTable += "<th>Pullups: " + fitness[0]['pullupsstyle'] + "</th>";
+    fitnessTable += "<td class='fitness-noedit pullups'>" + fitness[0]['pullups'] + "</td>";
+    fitnessTable += "<td class='fitness-edit'><input name='pullups' id='pullups'></td>";
+    fitnessTable += "</tr>";
+    fitnessTable += "<tr>";
+    fitnessTable += "<th>Jumps: " + fitness[0]['jumpsstyle'] + "</th>";
+    fitnessTable += "<td class='fitness-noedit jumps'>" + fitness[0]['jumps'] + "</td>";
+    fitnessTable += "<td class='fitness-edit'><input name='jumps' id='jumps'></td>";
+    fitnessTable += "</tr>";
+    fitnessTable += "<tr>";
+    fitnessTable += "<th class='fitness-noedit'>Roundhouse Kicks (<span class='roundtime'>" + fitness[0]['roundtime'] + "</span> per leg)</th>";
+    fitnessTable += "<th class='fitness-edit'>Roundhouse Kicks (<input name='roundtime' id='roundtime'> seconds per leg)</th>";
+    fitnessTable += "<td class='fitness-noedit'>R-<span class='roundright'>" + fitness[0]['roundright'] + "</span> / L-<span class='roundleft'>" + fitness[0]['roundleft'] + "</span></td>";
+    fitnessTable += "<td class='fitness-edit'>R-<input name='roundright' id='roundright'> / L-<input name='roundleft' id='roundleft'></td>";
+    fitnessTable += "</tr>";
+    fitnessTable += "<tr>";
+    fitnessTable += "<th>Stretch Test: " + fitness[0]['stretchstyle'] + "</th>";
+    fitnessTable += "<td class='fitness-noedit stretch'>" + fitness[0]['stretch'] + "\"</td>";
+    fitnessTable += "<td class='fitness-edit'><input name='stretch' id='stretch'>\"</td>";
+    fitnessTable += "</tr>";
+    fitnessTable += "</table> ";
+
+    fitnessTable += '<button class="fitness-noedit btn btn-primary student-welcome" id="editFitness">Edit Fitness Stats</button>';
+    fitnessTable += '<button class="fitness-edit btn btn-primary student-welcome" id="saveFitness">Save Fitness Stats</button>';
+    fitnessTable += '<button class="fitness-edit btn btn-danger student-welcome" id="cancelFitness">Cancel</button>';
+
+    return fitnessTable;
 }
