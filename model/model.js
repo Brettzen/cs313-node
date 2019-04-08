@@ -20,7 +20,7 @@ exports.getRanksFromDB = function(id, callback) {
       callback(err, null);
     }
 
-    console.log("DB RESULTS: " + JSON.stringify(result.rows));
+    // console.log("DB RESULTS: " + JSON.stringify(result.rows));
 
     callback(null, result.rows);
   });
@@ -72,7 +72,7 @@ exports.checkUsername = function(username, callback) {
       callback(err, null);
     }
 
-    console.log("DB RESULTS FOR CHECKUSERNAME: " + JSON.stringify(result.rows));
+    // console.log("DB RESULTS FOR CHECKUSERNAME: " + JSON.stringify(result.rows));
 
     callback(null, result.rows);
   });
@@ -90,7 +90,7 @@ exports.getRankNameAndColors = function(rankid, callback) {
       callback(err, null);
     }
 
-    console.log("DB RESULTS FOR GETRANKNAME: " + JSON.stringify(result.rows));
+    // console.log("DB RESULTS FOR GETRANKNAME: " + JSON.stringify(result.rows));
 
     callback(null, result.rows);
   });
@@ -108,7 +108,7 @@ exports.addUser = function(data, callback) {
       callback(err, null);
     }
 
-    console.log("DB RESULTS: " + JSON.stringify(result.rows));
+    // console.log("DB RESULTS: " + JSON.stringify(result.rows));
 
     callback(null, result.rows);
   });
@@ -117,7 +117,7 @@ exports.addUser = function(data, callback) {
 exports.getCurriculum = function(data, callback) {
   console.log("Attempting to get curriculum in the DB...");
 
-  var sql = "SELECT t.techniquekname, t.techniqueename, t.techniquedesc, i.imgsrc, c.categorykname, c.categorydesc FROM techniques t LEFT JOIN technique_images i ON t.techniqueid = i.techniqueid INNER JOIN curriculum_categories c ON t.categoryid = c.categoryid WHERE t.rankid = $1::int AND t.categoryid = $2::int";
+  var sql = "SELECT t.techniquekname, t.techniqueename, t.techniquedesc, i.imgsrc, v.vidsrc, c.categorykname, c.categorydesc FROM techniques t LEFT JOIN technique_images i ON t.techniqueid = i.techniqueid LEFT JOIN technique_videos v ON t.techniqueid = v.techniqueid INNER JOIN curriculum_categories c ON t.categoryid = c.categoryid WHERE t.rankid = $1::int AND t.categoryid = $2::int";
   var params = [data.rankid, data.categoryid];
 
   pool.query(sql, params, function(err, result) {
@@ -126,7 +126,7 @@ exports.getCurriculum = function(data, callback) {
       callback(err, null);
     }
 
-    console.log("DB RESULTS: " + JSON.stringify(result.rows));
+    // console.log("DB RESULTS: " + JSON.stringify(result.rows));
 
     callback(null, result.rows);
   });
@@ -144,7 +144,7 @@ exports.getFitness = function(username, callback) {
       callback(err, null);
     }
 
-    console.log("DB RESULTS: " + JSON.stringify(result.rows));
+    // console.log("DB RESULTS: " + JSON.stringify(result.rows));
 
     callback(null, result.rows);
   });
@@ -162,7 +162,7 @@ exports.addFitness = function(data, callback) {
       callback(err, null);
     }
 
-    console.log("DB RESULTS: " + JSON.stringify(result));
+    // console.log("DB RESULTS: " + JSON.stringify(result));
 
     callback(null, 1);
   });

@@ -3,7 +3,7 @@ $().ready(function(){
     window.location.href = '/createAccount';
   });
 
-  $(".responsive-curriculum-menu").on("click", function () {
+  $(".curriculum-menu").on("click", ".responsive-curriculum-menu", function () {
       $(".curriculum-menu div:nth-child(n+2)").slideToggle("fast");
       $(".responsive-curriculum-menu .fa-caret-down").toggle("fast");
       $(".responsive-curriculum-menu .fa-caret-up").toggle("fast");
@@ -22,7 +22,7 @@ $().ready(function(){
       window.location = "/dashboard/" + this.value;
   });
 
-  $(".stripe").on("click", function () {
+  $(".curriculum-menu").on("click", ".stripe", function () {
     if ($(window).width() <= 888) {
       $(".curriculum-menu div:nth-child(n+2)").slideToggle("fast");
       $(".responsive-curriculum-menu .fa-caret-down").toggle("fast");
@@ -45,7 +45,7 @@ $().ready(function(){
       var roundtime = $('#roundtime').val();
       var stretch = $('#stretch').val();
       var data = { pushups, legraises, pullups, jumps, roundright, roundleft, roundtime, stretch };
-      console.log(data);
+      // console.log(data);
       $.ajax({
           url: '/addFitness',
           method: 'GET',
@@ -100,8 +100,8 @@ $().ready(function(){
     currentRank = $('#rankSelect').val();
     $.get('/changeCurrentRank/' + currentRank, function(data, status) {
       var curriculumMenu = buildCurriculumMenu(currentRank);
-      $('.reg-curriculum-menu').html(curriculumMenu);
-      console.log(data);
+      $('.curriculum-menu').html(curriculumMenu);
+      // console.log(data);
       var welcomeScreen = buildWelcomeScreen(data[0].rankname);
       $('.curriculum-main').html(welcomeScreen);
       changeColorScheme(data[0]);
@@ -113,7 +113,7 @@ $().ready(function(){
 
 function getCurriculum(category, rank) {
   $.get("/getCurriculum/" + rank + "/" + category, function(data, status) {
-    console.log(data);
+    // console.log(data);
     if(typeof data.msg == 'undefined') {
       var curriculum = buildCurriculum(data);
       $(".curriculum-main").html(curriculum);
@@ -136,13 +136,11 @@ function buildCurriculum(techniques) {
     curriculumDisplay += "<p class='tech-title'><span class='tech-kname'>" + technique.techniquekname + "</span> &mdash; <span class='tech-ename'>" + technique.techniqueename + "</span></p>";
     curriculumDisplay += "<p class='tech-desc'>" + technique.techniquedesc + "</p>";
     curriculumDisplay += "<div class='media'>";
-      videos.forEach(function(video) {
-        curriculumDisplay += "<article>";
-        curriculumDisplay += "<video src='video[vidsrc]' style='max-width: video[vidwidth]px; max-height:video[vidheight]px;' preload controls>";
-        curriculumDisplay += "<p>Sorry! Your browser doesn't support our video.</p></video>";
-        curriculumDisplay += "<p class='video-title'>video[viddesc]</p>";
-        curriculumDisplay += "</article>";
-      });
+    if(technique.vidsrc != null) {
+      curriculumDisplay += "<article class='video-responsive'>";
+      curriculumDisplay += "<iframe width='560' height='315' src='" + technique.vidsrc + "' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyro.scope; picture-in-picture' allowfullscreen></iframe>";
+      curriculumDisplay += "</article>";
+    }
     curriculumDisplay += "</div>";
     curriculumDisplay += "</div>";
   });
@@ -151,7 +149,7 @@ function buildCurriculum(techniques) {
 }
 
 function buildCurriculumMenu(rank) {
-  var menu =  '<div class="responsive-curriculum-menu">'
+  var menu = '<div class="responsive-curriculum-menu">'
             + '<p>Curriculum Categories</p>'
             + '<i class="fa fa-caret-down" aria-hidden="true"></i><i class="fa fa-caret-up" aria-hidden="true"></i>'
             + '</div>'

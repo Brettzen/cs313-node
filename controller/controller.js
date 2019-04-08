@@ -28,7 +28,7 @@ exports.login = function(req, res) {
         fitness = result[0];
         req.session.fitness = fitness;
 
-        console.log("Fitness:", fitness);
+        // console.log("Fitness:", fitness);
         res.render('dashboard', { student: student, ranks: ranks, fitness:fitness });
       }
     });
@@ -58,7 +58,7 @@ exports.login = function(req, res) {
             student = result[0];
             student.currentrank = student.rankname;
             student.currentrankid = student.rankid;
-            console.log("Student Data: ", student);
+            // console.log("Student Data: ", student);
             req.session.data = student;
 
             // Get ranks for belt select
@@ -82,7 +82,7 @@ exports.login = function(req, res) {
                     fitness = result[0];
                     req.session.fitness = fitness;
 
-                    console.log("Fitness:", fitness);
+                    // console.log("Fitness:", fitness);
                     res.render('dashboard', { student: student, ranks: ranks, fitness:fitness });
                   }
                 });
@@ -131,7 +131,7 @@ exports.createAccount = function(req, res) {
           res.render("createAccount", { error: error });
           return;
         } else {
-          console.log("SUCCESS ADDING USER: ", result);
+          // console.log("SUCCESS ADDING USER: ", result);
           msg = {
             msg: 'Username created successfully. Sign in now!',
             msgclass: 'success'
@@ -149,10 +149,10 @@ exports.studentInfo = function (req, res) {
 }
 
 exports.changeCurrentRank = function (req, res) {
-  console.log(req.params.rankid);
-  console.log(student.currentrankid);
+  // console.log(req.params.rankid);
+  // console.log(student.currentrankid);
   student.currentrankid = req.params.rankid;
-  console.log("new student current rank id:" , student.currentrankid);
+  // console.log("new student current rank id:" , student.currentrankid);
   model.getRankNameAndColors(student.currentrankid, function(err, result) {
     if(err || result == null || result.length < 1) {
       console.log("ERROR! " + err);
@@ -224,7 +224,7 @@ function buildCategoryMenu(categories) {
   var categoryMenu = "";
   categories.forEach(function(category) {
     if (category['categoryid'] < 7) {
-      console.log(category['stripecolor']);
+      // console.log(category['stripecolor']);
       categoryMenu += "<div class='" + category['stripecolor'] + "-stripe'>" + category['categoryename'] + "</div>";
     }
   });

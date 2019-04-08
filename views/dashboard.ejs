@@ -31,13 +31,12 @@
                 <p>Curriculum Categories</p>
                 <i class="fa fa-caret-down" aria-hidden="true"></i><i class="fa fa-caret-up" aria-hidden="true"></i>
             </div>
-            <div class='reg-curriculum-menu'>
             <div class="white-stripe stripe" onclick="getCurriculum(1,<%= student.rankid %>)">Basic Techniques</div>
             <div class="yellow-stripe stripe" onclick="getCurriculum(2,<%= student.rankid %>)">Board Breaking</div>
             <div class="green-stripe stripe" onclick="getCurriculum(3,<%= student.rankid %>)">Kicks</div>
             <div class="blue-stripe stripe" onclick="getCurriculum(4,<%= student.rankid %>)">Forms</div>
             <div class="red-stripe stripe" onclick="getCurriculum(5,<%= student.rankid %>)">Self-Defense</div>
-            <div class="black-stripe stripe" onclick="getCurriculum(6,<%= student.rankid %>)">Sparring</div></div>
+            <div class="black-stripe stripe" onclick="getCurriculum(6,<%= student.rankid %>)">Sparring</div>
         </div><div class="curriculum-main">
           <h2 class="student-welcome">Welcome<%
             if (typeof student.gender != 'undefined') {
