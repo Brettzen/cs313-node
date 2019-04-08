@@ -151,7 +151,11 @@ function buildCurriculum(techniques) {
 }
 
 function buildCurriculumMenu(rank) {
-  var menu = '<div class="responsive-curriculum-menu">'
+  var menu =  '<div class="responsive-curriculum-menu">'
+            +     '<p>Curriculum Categories</p>'
+            +     '<i class="fa fa-caret-down" aria-hidden="true"></i><i class="fa fa-caret-up" aria-hidden="true"></i>'
+            + '</div>'
+            + '<div class="responsive-curriculum-menu">'
             + '<p>Curriculum Categories</p>'
             + '<i class="fa fa-caret-down" aria-hidden="true"></i><i class="fa fa-caret-up" aria-hidden="true"></i>'
             + '</div>'
