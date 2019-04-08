@@ -100,7 +100,7 @@ $().ready(function(){
     currentRank = $('#rankSelect').val();
     $.get('/changeCurrentRank/' + currentRank, function(data, status) {
       var curriculumMenu = buildCurriculumMenu(currentRank);
-      $('.curriculum-menu').html(curriculumMenu);
+      $('.reg-curriculum-menu').html(curriculumMenu);
       console.log(data);
       var welcomeScreen = buildWelcomeScreen(data[0].rankname);
       $('.curriculum-main').html(welcomeScreen);
@@ -135,16 +135,16 @@ function buildCurriculum(techniques) {
     }
     curriculumDisplay += "<p class='tech-title'><span class='tech-kname'>" + technique.techniquekname + "</span> &mdash; <span class='tech-ename'>" + technique.techniqueename + "</span></p>";
     curriculumDisplay += "<p class='tech-desc'>" + technique.techniquedesc + "</p>";
-    // curriculumDisplay += "<div class='media'>";
-    //   videos.forEach(function(video) {
-    //     curriculumDisplay += "<article>";
-    //     curriculumDisplay += "<video src='video[vidsrc]' style='max-width: video[vidwidth]px; max-height:video[vidheight]px;' preload controls>";
-    //     curriculumDisplay += "<p>Sorry! Your browser doesn't support our video.</p></video>";
-    //     curriculumDisplay += "<p class='video-title'>video[viddesc]</p>";
-    //     curriculumDisplay += "</article>";
-    //   });
-    // curriculumDisplay += "</div>";
-    // curriculumDisplay += "</div>";
+    curriculumDisplay += "<div class='media'>";
+      videos.forEach(function(video) {
+        curriculumDisplay += "<article>";
+        curriculumDisplay += "<video src='video[vidsrc]' style='max-width: video[vidwidth]px; max-height:video[vidheight]px;' preload controls>";
+        curriculumDisplay += "<p>Sorry! Your browser doesn't support our video.</p></video>";
+        curriculumDisplay += "<p class='video-title'>video[viddesc]</p>";
+        curriculumDisplay += "</article>";
+      });
+    curriculumDisplay += "</div>";
+    curriculumDisplay += "</div>";
   });
   curriculumDisplay += "</div>";
   return curriculumDisplay;
@@ -152,10 +152,6 @@ function buildCurriculum(techniques) {
 
 function buildCurriculumMenu(rank) {
   var menu =  '<div class="responsive-curriculum-menu">'
-            +     '<p>Curriculum Categories</p>'
-            +     '<i class="fa fa-caret-down" aria-hidden="true"></i><i class="fa fa-caret-up" aria-hidden="true"></i>'
-            + '</div>'
-            + '<div class="responsive-curriculum-menu">'
             + '<p>Curriculum Categories</p>'
             + '<i class="fa fa-caret-down" aria-hidden="true"></i><i class="fa fa-caret-up" aria-hidden="true"></i>'
             + '</div>'
